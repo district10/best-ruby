@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- mh-head-head (alias: raw-head) -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="district10" />
+    <meta name="generator" content="md2html" />
+    <title></title>
+    <!-- mh-css-before-cdn -->
+    <!-- mh-css-before -->
+    <!-- mh-css -->
+    <link rel="stylesheet" href="../_md2html/main.css" type="text/css" />
+    <!-- mh-css-after-cdn (alias: remote-css )-->
+    <!-- mh-css-after (alias: local-css) -->
+    <!-- mh-css-raw (alias: raw-css) -->
+    <!-- mh-head-tail -->
+</head>
+<body id ="md2html-body" class="markdown-body">
+<!-- mh-nav (true/false, default: false) -->
+<!-- body-before -->
+<!-- body (Modify with CAUSION) -->
+<h2 id="refactoring-switch-case-with-hashes">Refactoring switch case with Hashes</h2>
+<p>The author presents a simple refactoring from case statement to hash table, as an ode to Ruby&#8217;s &#8220;little things&#8221;. Ruby owes its popularity to an abundance of &#8220;little things&#8221;&#8211;small touches in just the right places that make all of its features come together in delightful ways. One of those little things, for me, is the humble Hash class.</p>
+<p>Hashes are one of the most versatile data structures in Ruby. I&#8217;ve written about them before, regarding their interchangability with Proc objects, but there&#8217;s so much more they can do.</p>
+<p>I was recently doing a code review and encountered a pattern where user input was being used to derive a class to instantiate. It looked something like this. (Note that this is not the actual code, and is not even the same use-case. I&#8217;ve taken some liberties here.)</p>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="kw">case</span> params[<span class="st">:student_level</span>]
+<span class="kw">when</span> <span class="st">:freshman</span>, <span class="st">:sophomore</span> <span class="kw">then</span>
+  student = <span class="dt">Student</span>::<span class="dt">Underclassman</span>.new(name, birthdate,
+    address, phone)
+<span class="kw">when</span> <span class="st">:junior</span>, <span class="st">:senior</span> <span class="kw">then</span>
+  student = <span class="dt">Student</span>::<span class="dt">Upperclassman</span>.new(name, birthdate,
+    address, phone)
+<span class="kw">when</span> <span class="st">:graduate</span>
+  student = <span class="dt">Student</span>::<span class="dt">Graduate</span>.new(name, birthdate,
+    address, phone)
+<span class="kw">else</span>
+  student = <span class="dt">Student</span>::<span class="dt">Unregistered</span>.new(name, birthdate,
+    address, phone)
+<span class="kw">end</span></code></pre></div>
+<p>I have no doubt that many of you reading this will take one look at that code and think of half a dozen ways in which it might be refactored. (In fact, I was a bit reluctant to write this article, for fear that folks might bike-shed over the best way to refactor my example here. I did it anyway. :))</p>
+<p>Looking at the code, my first impression was that the case statement was merely selecting a different class based on the value of the user input. We could easily refactor it (for a slight improvement in clarity) like this:</p>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby">klass = <span class="kw">case</span> params[<span class="st">:student_level</span>]
+  <span class="kw">when</span> <span class="st">:freshman</span>, <span class="st">:sophomore</span> <span class="kw">then</span>
+    <span class="dt">Student</span>::<span class="dt">Underclassman</span>
+  <span class="kw">when</span> <span class="st">:junior</span>, <span class="st">:senior</span> <span class="kw">then</span>
+    <span class="dt">Student</span>::<span class="dt">Upperclassman</span>
+  <span class="kw">when</span> <span class="st">:graduate</span>
+    <span class="dt">Student</span>::<span class="dt">Graduate</span>
+  <span class="kw">else</span>
+    <span class="dt">Student</span>::<span class="dt">Unregistered</span>
+  <span class="kw">end</span>
+student = klass.new(name, birthdate, address, phone)</code></pre></div>
+<p>Right? And when I see a case statement being used simply to select between different values given some input, I find myself itching to rewrite it using a hash. Because, really, what is a hash, except a mapping that selects between different values, given some input?</p>
+<p>This is the pattern I proposed in the code review:</p>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="dt">STUDENT_LEVELS</span> = <span class="dt">Hash</span>.new(<span class="dt">Student</span>::<span class="dt">Unregistered</span>).merge(
+    <span class="st">freshman: </span> <span class="dt">Student</span>::<span class="dt">Underclassman</span>,
+    <span class="st">sophomore: </span><span class="dt">Student</span>::<span class="dt">Underclassman</span>,
+    <span class="st">junior: </span>   <span class="dt">Student</span>::<span class="dt">Upperclassman</span>,
+    <span class="st">senior: </span>   <span class="dt">Student</span>::<span class="dt">Upperclassman</span>,
+    <span class="st">graduate: </span> <span class="dt">Student</span>::<span class="dt">Graduate</span>
+  )
+
+klass = <span class="dt">STUDENT_LEVELS</span>[params[<span class="st">:student_level</span>]]
+student = klass.new(name, birthdate, address, phone)</code></pre></div>
+<p>It takes advantage of Hash.new(default_value) to ensure that Student::Unregistered is always what we get for any unrecognized input, and then Hash#merge adds in the specific mappings.</p>
+<p>The beauty of this, to me, is that the class-selection logic is now separate from the class-instantiation logic. The mapping itself can be declared outside the method, reducing clutter. That leaves us with just the two lines in the method itself: fetching the class to instantiate, and instantiating it. Easy to read, easy to test, and easy to maintain.</p>
+<p>Win, win, and win!</p>
+<p><a href="http://weblog.jamisbuck.org/2015/11/14/little-things-refactoring-with-hashes.html">From</a></p>
+<!-- body-after -->
+<!-- mh-info (true/false, default: true) -->
+<!-- <code id="mh-meta-json" style="display: none;"> {"ismarkdown":"true","files":[".gitignore","CODE_OF_CONDUCT.md","Makefile","README.md","SUMMARY.md","best_practices.md","best_practices/","best_practices/using_exception_e.md","idiomatic_ruby.md","idiomatic_ruby/","idiomatic_ruby/array_of_strings_symbols.md","idiomatic_ruby/array_sample.md","idiomatic_ruby/collect_vs_select.md","idiomatic_ruby/combine_elements_in_collection.md","idiomatic_ruby/conditional_assignment.md","idiomatic_ruby/each_vs_map.md","idiomatic_ruby/implicit_return.md","idiomatic_ruby/multiple_assignment.md","idiomatic_ruby/options_hash_with_defaults.md","idiomatic_ruby/use_symbol_to_proc.md","idiomatic_ruby/use_times.md","md2html.jar","refactorings.md","refactorings/","refactorings/case_with_hashes.md","refactorings/conditionals_when_object_is_nil.md","tricks.md","tricks/","tricks/README.md","tricks/SUMMARY.md","tricks/add_uniq_value_to_array.md","tricks/alphanumeric-incrementing.md","tricks/associative-arrays.md","tricks/at-exit-method.md","tricks/autovivification.md","tricks/blocks-can-take-blocks.md","tricks/bubbling-up-thread-errors.md","tricks/case-on-ranges.md","tricks/count-all-objects.md","tricks/cycle.md","tricks/data.md","tricks/easiest-database-pstore-yaml.md","tricks/easiest-database-pstore.md","tricks/email.txt","tricks/enable-garbage-collector-profiler.md","tricks/enable-ruby-warnings.md","tricks/fast-memoization-fibonacci.md","tricks/fetch-data.md","tricks/get-random-data.md","tricks/head-tail.md","tricks/inject.md","tricks/inspecting-the-source-with-script-lines.md","tricks/introspecting_block_parameters.md","tricks/iterating-over-specific-types.md","tricks/lambda-your-own-syntax.md","tricks/memoization.md","tricks/people.yml","tricks/print-formatted-with-debug.md","tricks/ruby-debug-flag.md","tricks/ruby_can_even_explain_it_to_you.txt","tricks/shortcut-variable-interpolation.md","tricks/single-instance-running.md","tricks/smalltalk-conditionals.md","tricks/source_code/","tricks/source_code/Gemfile","tricks/source_code/Rakefile","tricks/source_code/add_uniq_value_to_array.rb","tricks/source_code/alphanumeric_incrementing.rb","tricks/source_code/associative_arrays.rb","tricks/source_code/at_exit_method.rb","tricks/source_code/autovivification.rb","tricks/source_code/blocks_can_take_blocks.rb","tricks/source_code/bubbling_up_thread_errors.rb","tricks/source_code/case_on_ranges.rb","tricks/source_code/count_all_objects.rb","tricks/source_code/cycle.rb","tricks/source_code/data.rb","tricks/source_code/easiest_database_pstore.rb","tricks/source_code/easiest_database_pstore_yaml.rb","tricks/source_code/enable_garbage_collector_profiler.rb","tricks/source_code/enable_ruby_warnings.rb","tricks/source_code/fast_memoization_fibonacci.rb","tricks/source_code/fetch_data.rb","tricks/source_code/get_random_data.rb","tricks/source_code/group_using_itself.rb","tricks/source_code/head_tail.rb","tricks/source_code/inject.rb","tricks/source_code/inspecting_the_source_with_script_lines.rb","tricks/source_code/iterating_over_specific_types.rb","tricks/source_code/lambda_your_own_syntax.rb","tricks/source_code/memoization.rb","tricks/source_code/print_formatted_with_debug.rb","tricks/source_code/ruby_debug_flag.rb","tricks/source_code/shortcut_variable_interpolation.rb","tricks/source_code/single_instance_running.rb","tricks/source_code/smalltalk_conditionals.rb","tricks/source_code/splat_operator.rb","tricks/source_code/stab_operator.rb","tricks/source_code/struct_without_assignment.rb","tricks/source_code/super_magic_keyword.rb","tricks/source_code/super_magic_keyword2.rb","tricks/source_code/super_magic_keyword3.rb","tricks/source_code/super_magic_keyword4.rb","tricks/source_code/super_magic_keyword5.rb","tricks/source_code/tail_call.rb","tricks/source_code/trigger_irb_as_needed.rb","tricks/source_code/unfreeze_objects_with_fiddle.rb","tricks/source_code/unused_variable_format.rb","tricks/source_code/variables_from_a_regex.rb","tricks/source_code/zip.rb","tricks/splat-operator.md","tricks/stab-operator.md","tricks/struct-without-assignment.md","tricks/super-magic-keyword.md","tricks/super-magic-keyword2.md","tricks/super-magic-keyword3.md","tricks/super-magic-keyword4.md","tricks/super-magic-keyword5.md","tricks/tail-call.md","tricks/tricks.md","tricks/trigger-irb-as-needed.md","tricks/unfreeze-objects-with-fiddle.md","tricks/unused-variable-format.md","tricks/variables-from-a-regex.md","tricks/zip.md"],"title-prefix":"","generator":"pandoc+md2html.jar","mh-css":["main.css"],"thispath":"refactorings\\case_with_hashes.md","mh-native":true,"md2htmldir":"_md2html","rootdir":"../","mh-nav":false,"mh-info":true,"mh-js":["lazyload.min.js","jquery-3.0.0.min.js","clipboard.min.js","main.js"]} </code> -->
+<script>
+    var mh = {
+        "rootdir": "../",
+        "absoluteRootdirUrl": "",
+        "thisPath": "refactorings\case_with_hashes.md",
+        "files": [".gitignore", "CODE_OF_CONDUCT.md", "Makefile", "README.md", "SUMMARY.md", "best_practices.md", "best_practices/", "best_practices/using_exception_e.md", "idiomatic_ruby.md", "idiomatic_ruby/", "idiomatic_ruby/array_of_strings_symbols.md", "idiomatic_ruby/array_sample.md", "idiomatic_ruby/collect_vs_select.md", "idiomatic_ruby/combine_elements_in_collection.md", "idiomatic_ruby/conditional_assignment.md", "idiomatic_ruby/each_vs_map.md", "idiomatic_ruby/implicit_return.md", "idiomatic_ruby/multiple_assignment.md", "idiomatic_ruby/options_hash_with_defaults.md", "idiomatic_ruby/use_symbol_to_proc.md", "idiomatic_ruby/use_times.md", "md2html.jar", "refactorings.md", "refactorings/", "refactorings/case_with_hashes.md", "refactorings/conditionals_when_object_is_nil.md", "tricks.md", "tricks/", "tricks/README.md", "tricks/SUMMARY.md", "tricks/add_uniq_value_to_array.md", "tricks/alphanumeric-incrementing.md", "tricks/associative-arrays.md", "tricks/at-exit-method.md", "tricks/autovivification.md", "tricks/blocks-can-take-blocks.md", "tricks/bubbling-up-thread-errors.md", "tricks/case-on-ranges.md", "tricks/count-all-objects.md", "tricks/cycle.md", "tricks/data.md", "tricks/easiest-database-pstore-yaml.md", "tricks/easiest-database-pstore.md", "tricks/email.txt", "tricks/enable-garbage-collector-profiler.md", "tricks/enable-ruby-warnings.md", "tricks/fast-memoization-fibonacci.md", "tricks/fetch-data.md", "tricks/get-random-data.md", "tricks/head-tail.md", "tricks/inject.md", "tricks/inspecting-the-source-with-script-lines.md", "tricks/introspecting_block_parameters.md", "tricks/iterating-over-specific-types.md", "tricks/lambda-your-own-syntax.md", "tricks/memoization.md", "tricks/people.yml", "tricks/print-formatted-with-debug.md", "tricks/ruby-debug-flag.md", "tricks/ruby_can_even_explain_it_to_you.txt", "tricks/shortcut-variable-interpolation.md", "tricks/single-instance-running.md", "tricks/smalltalk-conditionals.md", "tricks/source_code/", "tricks/source_code/Gemfile", "tricks/source_code/Rakefile", "tricks/source_code/add_uniq_value_to_array.rb", "tricks/source_code/alphanumeric_incrementing.rb", "tricks/source_code/associative_arrays.rb", "tricks/source_code/at_exit_method.rb", "tricks/source_code/autovivification.rb", "tricks/source_code/blocks_can_take_blocks.rb", "tricks/source_code/bubbling_up_thread_errors.rb", "tricks/source_code/case_on_ranges.rb", "tricks/source_code/count_all_objects.rb", "tricks/source_code/cycle.rb", "tricks/source_code/data.rb", "tricks/source_code/easiest_database_pstore.rb", "tricks/source_code/easiest_database_pstore_yaml.rb", "tricks/source_code/enable_garbage_collector_profiler.rb", "tricks/source_code/enable_ruby_warnings.rb", "tricks/source_code/fast_memoization_fibonacci.rb", "tricks/source_code/fetch_data.rb", "tricks/source_code/get_random_data.rb", "tricks/source_code/group_using_itself.rb", "tricks/source_code/head_tail.rb", "tricks/source_code/inject.rb", "tricks/source_code/inspecting_the_source_with_script_lines.rb", "tricks/source_code/iterating_over_specific_types.rb", "tricks/source_code/lambda_your_own_syntax.rb", "tricks/source_code/memoization.rb", "tricks/source_code/print_formatted_with_debug.rb", "tricks/source_code/ruby_debug_flag.rb", "tricks/source_code/shortcut_variable_interpolation.rb", "tricks/source_code/single_instance_running.rb", "tricks/source_code/smalltalk_conditionals.rb", "tricks/source_code/splat_operator.rb", "tricks/source_code/stab_operator.rb", "tricks/source_code/struct_without_assignment.rb", "tricks/source_code/super_magic_keyword.rb", "tricks/source_code/super_magic_keyword2.rb", "tricks/source_code/super_magic_keyword3.rb", "tricks/source_code/super_magic_keyword4.rb", "tricks/source_code/super_magic_keyword5.rb", "tricks/source_code/tail_call.rb", "tricks/source_code/trigger_irb_as_needed.rb", "tricks/source_code/unfreeze_objects_with_fiddle.rb", "tricks/source_code/unused_variable_format.rb", "tricks/source_code/variables_from_a_regex.rb", "tricks/source_code/zip.rb", "tricks/splat-operator.md", "tricks/stab-operator.md", "tricks/struct-without-assignment.md", "tricks/super-magic-keyword.md", "tricks/super-magic-keyword2.md", "tricks/super-magic-keyword3.md", "tricks/super-magic-keyword4.md", "tricks/super-magic-keyword5.md", "tricks/tail-call.md", "tricks/tricks.md", "tricks/trigger-irb-as-needed.md", "tricks/unfreeze-objects-with-fiddle.md", "tricks/unused-variable-format.md", "tricks/variables-from-a-regex.md", "tricks/zip.md"],
+        "pagetitle": "NO TITLE! (Use `title: <TITLE_NAME>' to set page title.)",
+    };
+</script>
+<!-- mh-js-before-cdn -->
+<!-- mh-js-before -->
+<!-- mh-js -->
+<script src="../_md2html/lazyload.min.js"></script>
+<script src="../_md2html/jquery-3.0.0.min.js"></script>
+<script src="../_md2html/clipboard.min.js"></script>
+<script src="../_md2html/main.js"></script>
+<!-- mh-js-after-cdn (alias: remote-js) -->
+<!-- mh-js-after (alias: local-js) -->
+<!-- mh-js-raw (alias: raw-js) -->
+</body>
+</html>

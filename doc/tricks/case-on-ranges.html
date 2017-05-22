@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- mh-head-head (alias: raw-head) -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="district10" />
+    <meta name="generator" content="md2html" />
+    <title></title>
+    <!-- mh-css-before-cdn -->
+    <!-- mh-css-before -->
+    <!-- mh-css -->
+    <link rel="stylesheet" href="../_md2html/main.css" type="text/css" />
+    <!-- mh-css-after-cdn (alias: remote-css )-->
+    <!-- mh-css-after (alias: local-css) -->
+    <!-- mh-css-raw (alias: raw-css) -->
+    <!-- mh-head-tail -->
+</head>
+<body id ="md2html-body" class="markdown-body">
+<!-- mh-nav (true/false, default: false) -->
+<!-- body-before -->
+<!-- body (Modify with CAUSION) -->
+<h3 id="case-on-ranges">Case on ranges</h3>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby">age = rand(<span class="dv">1</span>..<span class="dv">100</span>)
+p age
+
+<span class="kw">case</span> age
+  <span class="kw">when</span> -<span class="dt">Float</span>::<span class="dt">INFINITY</span>..20
+    p <span class="st">&#39;You are too young&#39;</span>
+  <span class="kw">when</span> <span class="dv">21</span>..<span class="dv">64</span>
+    p <span class="st">&#39;You are at the right age&#39;</span>
+  <span class="kw">when</span> <span class="dv">65</span>..<span class="dt">Float</span>::<span class="dt">INFINITY</span>
+    p <span class="st">&#39;You are too old&#39;</span>
+<span class="kw">end</span>
+
+<span class="co"># Result:</span>
+<span class="co"># 55</span>
+<span class="co"># &quot;You are at the right age&quot;</span></code></pre></div>
+<p><a href="source_code/case_on_ranges.rb">View Source</a></p>
+<!-- body-after -->
+<!-- mh-info (true/false, default: true) -->
+<!-- <code id="mh-meta-json" style="display: none;"> {"ismarkdown":"true","files":[".gitignore","CODE_OF_CONDUCT.md","Makefile","README.md","SUMMARY.md","best_practices.md","best_practices/","best_practices/using_exception_e.md","idiomatic_ruby.md","idiomatic_ruby/","idiomatic_ruby/array_of_strings_symbols.md","idiomatic_ruby/array_sample.md","idiomatic_ruby/collect_vs_select.md","idiomatic_ruby/combine_elements_in_collection.md","idiomatic_ruby/conditional_assignment.md","idiomatic_ruby/each_vs_map.md","idiomatic_ruby/implicit_return.md","idiomatic_ruby/multiple_assignment.md","idiomatic_ruby/options_hash_with_defaults.md","idiomatic_ruby/use_symbol_to_proc.md","idiomatic_ruby/use_times.md","md2html.jar","refactorings.md","refactorings/","refactorings/case_with_hashes.md","refactorings/conditionals_when_object_is_nil.md","tricks.md","tricks/","tricks/README.md","tricks/SUMMARY.md","tricks/add_uniq_value_to_array.md","tricks/alphanumeric-incrementing.md","tricks/associative-arrays.md","tricks/at-exit-method.md","tricks/autovivification.md","tricks/blocks-can-take-blocks.md","tricks/bubbling-up-thread-errors.md","tricks/case-on-ranges.md","tricks/count-all-objects.md","tricks/cycle.md","tricks/data.md","tricks/easiest-database-pstore-yaml.md","tricks/easiest-database-pstore.md","tricks/email.txt","tricks/enable-garbage-collector-profiler.md","tricks/enable-ruby-warnings.md","tricks/fast-memoization-fibonacci.md","tricks/fetch-data.md","tricks/get-random-data.md","tricks/head-tail.md","tricks/inject.md","tricks/inspecting-the-source-with-script-lines.md","tricks/introspecting_block_parameters.md","tricks/iterating-over-specific-types.md","tricks/lambda-your-own-syntax.md","tricks/memoization.md","tricks/people.yml","tricks/print-formatted-with-debug.md","tricks/ruby-debug-flag.md","tricks/ruby_can_even_explain_it_to_you.txt","tricks/shortcut-variable-interpolation.md","tricks/single-instance-running.md","tricks/smalltalk-conditionals.md","tricks/source_code/","tricks/source_code/Gemfile","tricks/source_code/Rakefile","tricks/source_code/add_uniq_value_to_array.rb","tricks/source_code/alphanumeric_incrementing.rb","tricks/source_code/associative_arrays.rb","tricks/source_code/at_exit_method.rb","tricks/source_code/autovivification.rb","tricks/source_code/blocks_can_take_blocks.rb","tricks/source_code/bubbling_up_thread_errors.rb","tricks/source_code/case_on_ranges.rb","tricks/source_code/count_all_objects.rb","tricks/source_code/cycle.rb","tricks/source_code/data.rb","tricks/source_code/easiest_database_pstore.rb","tricks/source_code/easiest_database_pstore_yaml.rb","tricks/source_code/enable_garbage_collector_profiler.rb","tricks/source_code/enable_ruby_warnings.rb","tricks/source_code/fast_memoization_fibonacci.rb","tricks/source_code/fetch_data.rb","tricks/source_code/get_random_data.rb","tricks/source_code/group_using_itself.rb","tricks/source_code/head_tail.rb","tricks/source_code/inject.rb","tricks/source_code/inspecting_the_source_with_script_lines.rb","tricks/source_code/iterating_over_specific_types.rb","tricks/source_code/lambda_your_own_syntax.rb","tricks/source_code/memoization.rb","tricks/source_code/print_formatted_with_debug.rb","tricks/source_code/ruby_debug_flag.rb","tricks/source_code/shortcut_variable_interpolation.rb","tricks/source_code/single_instance_running.rb","tricks/source_code/smalltalk_conditionals.rb","tricks/source_code/splat_operator.rb","tricks/source_code/stab_operator.rb","tricks/source_code/struct_without_assignment.rb","tricks/source_code/super_magic_keyword.rb","tricks/source_code/super_magic_keyword2.rb","tricks/source_code/super_magic_keyword3.rb","tricks/source_code/super_magic_keyword4.rb","tricks/source_code/super_magic_keyword5.rb","tricks/source_code/tail_call.rb","tricks/source_code/trigger_irb_as_needed.rb","tricks/source_code/unfreeze_objects_with_fiddle.rb","tricks/source_code/unused_variable_format.rb","tricks/source_code/variables_from_a_regex.rb","tricks/source_code/zip.rb","tricks/splat-operator.md","tricks/stab-operator.md","tricks/struct-without-assignment.md","tricks/super-magic-keyword.md","tricks/super-magic-keyword2.md","tricks/super-magic-keyword3.md","tricks/super-magic-keyword4.md","tricks/super-magic-keyword5.md","tricks/tail-call.md","tricks/tricks.md","tricks/trigger-irb-as-needed.md","tricks/unfreeze-objects-with-fiddle.md","tricks/unused-variable-format.md","tricks/variables-from-a-regex.md","tricks/zip.md"],"title-prefix":"","generator":"pandoc+md2html.jar","mh-css":["main.css"],"thispath":"tricks\\case-on-ranges.md","mh-native":true,"md2htmldir":"_md2html","rootdir":"../","mh-nav":false,"mh-info":true,"mh-js":["lazyload.min.js","jquery-3.0.0.min.js","clipboard.min.js","main.js"]} </code> -->
+<script>
+    var mh = {
+        "rootdir": "../",
+        "absoluteRootdirUrl": "",
+        "thisPath": "tricks\case-on-ranges.md",
+        "files": [".gitignore", "CODE_OF_CONDUCT.md", "Makefile", "README.md", "SUMMARY.md", "best_practices.md", "best_practices/", "best_practices/using_exception_e.md", "idiomatic_ruby.md", "idiomatic_ruby/", "idiomatic_ruby/array_of_strings_symbols.md", "idiomatic_ruby/array_sample.md", "idiomatic_ruby/collect_vs_select.md", "idiomatic_ruby/combine_elements_in_collection.md", "idiomatic_ruby/conditional_assignment.md", "idiomatic_ruby/each_vs_map.md", "idiomatic_ruby/implicit_return.md", "idiomatic_ruby/multiple_assignment.md", "idiomatic_ruby/options_hash_with_defaults.md", "idiomatic_ruby/use_symbol_to_proc.md", "idiomatic_ruby/use_times.md", "md2html.jar", "refactorings.md", "refactorings/", "refactorings/case_with_hashes.md", "refactorings/conditionals_when_object_is_nil.md", "tricks.md", "tricks/", "tricks/README.md", "tricks/SUMMARY.md", "tricks/add_uniq_value_to_array.md", "tricks/alphanumeric-incrementing.md", "tricks/associative-arrays.md", "tricks/at-exit-method.md", "tricks/autovivification.md", "tricks/blocks-can-take-blocks.md", "tricks/bubbling-up-thread-errors.md", "tricks/case-on-ranges.md", "tricks/count-all-objects.md", "tricks/cycle.md", "tricks/data.md", "tricks/easiest-database-pstore-yaml.md", "tricks/easiest-database-pstore.md", "tricks/email.txt", "tricks/enable-garbage-collector-profiler.md", "tricks/enable-ruby-warnings.md", "tricks/fast-memoization-fibonacci.md", "tricks/fetch-data.md", "tricks/get-random-data.md", "tricks/head-tail.md", "tricks/inject.md", "tricks/inspecting-the-source-with-script-lines.md", "tricks/introspecting_block_parameters.md", "tricks/iterating-over-specific-types.md", "tricks/lambda-your-own-syntax.md", "tricks/memoization.md", "tricks/people.yml", "tricks/print-formatted-with-debug.md", "tricks/ruby-debug-flag.md", "tricks/ruby_can_even_explain_it_to_you.txt", "tricks/shortcut-variable-interpolation.md", "tricks/single-instance-running.md", "tricks/smalltalk-conditionals.md", "tricks/source_code/", "tricks/source_code/Gemfile", "tricks/source_code/Rakefile", "tricks/source_code/add_uniq_value_to_array.rb", "tricks/source_code/alphanumeric_incrementing.rb", "tricks/source_code/associative_arrays.rb", "tricks/source_code/at_exit_method.rb", "tricks/source_code/autovivification.rb", "tricks/source_code/blocks_can_take_blocks.rb", "tricks/source_code/bubbling_up_thread_errors.rb", "tricks/source_code/case_on_ranges.rb", "tricks/source_code/count_all_objects.rb", "tricks/source_code/cycle.rb", "tricks/source_code/data.rb", "tricks/source_code/easiest_database_pstore.rb", "tricks/source_code/easiest_database_pstore_yaml.rb", "tricks/source_code/enable_garbage_collector_profiler.rb", "tricks/source_code/enable_ruby_warnings.rb", "tricks/source_code/fast_memoization_fibonacci.rb", "tricks/source_code/fetch_data.rb", "tricks/source_code/get_random_data.rb", "tricks/source_code/group_using_itself.rb", "tricks/source_code/head_tail.rb", "tricks/source_code/inject.rb", "tricks/source_code/inspecting_the_source_with_script_lines.rb", "tricks/source_code/iterating_over_specific_types.rb", "tricks/source_code/lambda_your_own_syntax.rb", "tricks/source_code/memoization.rb", "tricks/source_code/print_formatted_with_debug.rb", "tricks/source_code/ruby_debug_flag.rb", "tricks/source_code/shortcut_variable_interpolation.rb", "tricks/source_code/single_instance_running.rb", "tricks/source_code/smalltalk_conditionals.rb", "tricks/source_code/splat_operator.rb", "tricks/source_code/stab_operator.rb", "tricks/source_code/struct_without_assignment.rb", "tricks/source_code/super_magic_keyword.rb", "tricks/source_code/super_magic_keyword2.rb", "tricks/source_code/super_magic_keyword3.rb", "tricks/source_code/super_magic_keyword4.rb", "tricks/source_code/super_magic_keyword5.rb", "tricks/source_code/tail_call.rb", "tricks/source_code/trigger_irb_as_needed.rb", "tricks/source_code/unfreeze_objects_with_fiddle.rb", "tricks/source_code/unused_variable_format.rb", "tricks/source_code/variables_from_a_regex.rb", "tricks/source_code/zip.rb", "tricks/splat-operator.md", "tricks/stab-operator.md", "tricks/struct-without-assignment.md", "tricks/super-magic-keyword.md", "tricks/super-magic-keyword2.md", "tricks/super-magic-keyword3.md", "tricks/super-magic-keyword4.md", "tricks/super-magic-keyword5.md", "tricks/tail-call.md", "tricks/tricks.md", "tricks/trigger-irb-as-needed.md", "tricks/unfreeze-objects-with-fiddle.md", "tricks/unused-variable-format.md", "tricks/variables-from-a-regex.md", "tricks/zip.md"],
+        "pagetitle": "NO TITLE! (Use `title: <TITLE_NAME>' to set page title.)",
+    };
+</script>
+<!-- mh-js-before-cdn -->
+<!-- mh-js-before -->
+<!-- mh-js -->
+<script src="../_md2html/lazyload.min.js"></script>
+<script src="../_md2html/jquery-3.0.0.min.js"></script>
+<script src="../_md2html/clipboard.min.js"></script>
+<script src="../_md2html/main.js"></script>
+<!-- mh-js-after-cdn (alias: remote-js) -->
+<!-- mh-js-after (alias: local-js) -->
+<!-- mh-js-raw (alias: raw-js) -->
+</body>
+</html>
