@@ -25,50 +25,244 @@
 <h1 id="tricks">Tricks</h1>
 <p>The majority of these Ruby Tricks were extracted from James Edward Gray II <a href="https://www.youtube.com/watch?v=aBgnlBoIkVM">talk</a>.</p>
 <ul>
-<li><a href="tricks/alphanumeric-incrementing.md">Alphanumeric incrementing</a></li>
-<li><a href="tricks/associative-arrays.md">Associative arrays</a></li>
-<li><a href="tricks/at-exit-method.md">At exit method</a></li>
-<li><a href="tricks/autovivification.md">Autovivification</a></li>
-<li><a href="tricks/blocks-can-take-blocks.md">Blocks can take blocks</a></li>
-<li><a href="tricks/bubbling-up-thread-errors.md">Bubbling up thread errors</a></li>
-<li><a href="tricks/case-on-ranges.md">Case on ranges</a></li>
-<li><a href="tricks/count-all-objects.md">Count all objects</a></li>
-<li><a href="tricks/cycle.md">Cycle</a></li>
-<li><a href="tricks/data.md">Data</a></li>
+<li><dl>
+<dt><a href="tricks/alphanumeric-incrementing.md">Alphanumeric incrementing</a> <code class="fold">@</code></dt>
+<dd><p>&#21644; C++ &#30340; next_premutation &#31867;&#20284;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/associative-arrays.md">Associative arrays</a> <code class="fold">@</code></dt>
+<dd><p>assoc array &#23601;&#26159;&#19968;&#20010; array &#37324;&#30340;&#27599;&#20010; item &#37117;&#26159; length &#20026; 2 &#30340; array&#12290;&#21487;&#20197;&#30475;&#25104; key-&gt;value &#30340; assoc pair&#12290;</p>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby">array.assoc(key)        <span class="co"># get pair (array) through key</span>
+array.rassoc(value)     <span class="co"># get pair (array) through value</span></code></pre></div>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/at-exit-method.md">At exit method</a> <code class="fold">@</code></dt>
+<dd><p>&#21644; c &#35821;&#35328;&#27880;&#20876; at_exit &#20989;&#25968;&#31867;&#20284;&#65292;&#19981;&#36807; ruby &#37324;&#38754;&#21487;&#20197;&#27880;&#20876;&#22810;&#27425;&#65292;&#25191;&#34892;&#39034;&#24207;&#24688;&#22909;&#30456;&#21453;&#12290;&#65288;&#26368;&#24320;&#22836;&#27880;&#20876;&#30340;&#65292;&#26368;&#21518;&#25165;&#25191;&#34892;&#12290;&#65289;</p>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby">at_exit <span class="kw">do</span>
+  puts <span class="st">&#39;inside at_exit method for the first time&#39;</span>
+<span class="kw">end</span></code></pre></div>
+<p>&#21487;&#20197;&#30475;&#21040;&#65292;at_exit &#20989;&#25968;&#36755;&#20837;&#19968;&#20010; block&#65292;&#20316;&#20026;&#35201;&#25191;&#34892;&#30340;&#20869;&#23481;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/autovivification.md">Autovivification</a> <code class="fold">@</code></dt>
+<dd><div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby">vivification
+    [,vivifi<span class="st">&#39;kei&#643;&#601;n]</span>
+<span class="st">    n. &#32473;&#19982;&#29983;&#27668;&#65307;&#36171;&#20104;&#29983;&#21629;&#65307;&#33487;&#37266;</span></code></pre></div>
+<p>&#33258;&#21160;&#32473; hash &#21152;&#19978; value&#65288;&#21448;&#26159;&#19968;&#20010; hash&#65289;</p>
+<pre><code>deep = Hash.new { |hash,key| hash[key] = Hash.new(&amp;hash.default_proc) }
+
+deep[:a][:b][:c][:d] = 42
+p deep
+# Result:
+# {:a=&gt;{:b=&gt;{:c=&gt;{:d=&gt;42}}}}</code></pre>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/blocks-can-take-blocks.md">Blocks can take blocks</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#20010;&#19981;&#22826;&#25026;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/bubbling-up-thread-errors.md">Bubbling up thread errors</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#20010;&#19981;&#22826;&#25026;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/case-on-ranges.md">Case on ranges</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#20010;&#20284;&#20046;&#26412;&#26469;&#23601;&#36825;&#20040;&#29992;&#21834;&#8230;&#8230;<code>-Float::INFINITY..20</code> &#21644; <code>65..Float::INFINITY</code> &#36825;&#20010; range &#20498;&#26159;&#19981;&#38169;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/count-all-objects.md">Count all objects</a> <code class="fold">@</code></dt>
+<dd><p><code>ObjectSpace.count_objects</code> &#19981;&#36807;&#25171;&#21360;&#25928;&#26524;&#19981;&#22909;&#65292;&#29992; <code>pp</code> &#26469;&#25171;&#21360;&#21487;&#20197;&#25442;&#34892;&#12290;</p>
+<p>pp &#26159; pretty print &#30340;&#32553;&#20889;&#12290;&#25991;&#26723;&#65306;<a href="http://ruby-doc.org/stdlib-1.9.3/libdoc/pp/rdoc/PP.html">Class: PP (Ruby 1.9.3)</a></p>
+<pre><code>pp(obj, out=$&gt;, width=79)</code></pre>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/cycle.md">Cycle</a> <code class="fold">@</code></dt>
+<dd><p>&#19968;&#20010; array &#21464;&#25104;&#19968;&#20010; cycle&#65292;&#28982;&#21518;&#20174;&#37324;&#38754;&#21462;&#20986;&#19968;&#23450;&#38271;&#24230;&#21464;&#25104; array&#12290;</p>
+<p>&#29992;&#30340;&#26159; ring = array.cycle, ring.take(length)</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/data.md">Data</a> <code class="fold">@</code></dt>
+<dd><p>&#21442;&#32771;&#25991;&#26723;&#65306;<a href="https://ruby-china.org/topics/27045">Mixing code and data in Ruby with DATA and <strong>END</strong> &#183; Ruby China</a></p>
+<p>&#22312;&#19979;&#38754;&#30340;&#20363;&#23376;&#20013;&#65292;&#25105;&#20351;&#29992;&#19968;&#20010;&#20851;&#38190;&#23383;&#65306; <code>__END__</code>&#12290; &#25152;&#26377;&#22312; <code>__END__</code> &#19979;&#38754;&#30340;&#20869;&#23481;&#20250;&#34987; Ruby &#35299;&#37322;&#22120;&#24573;&#30053;&#65292; &#26356;&#26377;&#36259;&#30340;&#26159;&#65292;Ruby &#25552;&#20379;&#20102;&#19968;&#20010; IO &#23545;&#35937;&#21483;&#20570; <code>DATA</code>&#65292;&#21487;&#20197;&#35753;&#20320;&#35835;&#21462;&#25152;&#26377;&#22312; <code>__END__</code> &#19979;&#38754;&#30340;&#20869;&#23481;&#65292;&#23601;&#20687;&#35835;&#21462;&#21478;&#19968;&#20010;&#25991;&#20214;&#19968;&#26679;&#12290;</p>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="dt">DATA</span>.each_line <span class="kw">do</span> |line|
+  puts line
+<span class="kw">end</span>
+
+<span class="kw">__END__</span>
+Doom
+Quake
+Diablo</code></pre></div>
+</dd>
+</dl></li>
 <li><a href="tricks/easiest-database-pstore.md">Easiest database pstore</a></li>
 <li><a href="tricks/easiest-database-pstore-yaml.md">Easiest database pstore yaml</a></li>
-<li><a href="tricks/enable-garbage-collector-profiler.md">Enable garbage collector profiler</a></li>
-<li><a href="tricks/enable-ruby-warnings.md">Enable ruby warnings</a></li>
-<li><a href="tricks/fast-memoization-fibonacci.md">Fast memoization fibonacci</a></li>
-<li><a href="tricks/fetch-data.md">Fetch data</a></li>
+<li><p><a href="tricks/enable-garbage-collector-profiler.md">Enable garbage collector profiler</a></p></li>
+<li><dl>
+<dt><a href="tricks/enable-ruby-warnings.md">Enable ruby warnings</a> <code class="fold">@</code></dt>
+<dd><p><code>$VERBOSE = true</code></p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/fast-memoization-fibonacci.md">Fast memoization fibonacci</a> <code class="fold">@</code></dt>
+<dd><p>````ruby fibonacci = Hash.new{ |numbers,index| numbers[index] = fibonacci[index - 2] + fibonacci[index - 1] }.update(0 =&gt; 0, 1 =&gt; 1)</p>
+<p>p fibonacci[300]</p>
+<h1 id="result">Result:</h1>
+<h1 id="section">222232244629420445529739893461909967206666939096499764990979600</h1>
+<p>```</p>
+<p>&#39069;&#8230;&#8230;&#36825;&#20040;&#21500;&#8230;&#8230;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/fetch-data.md">Fetch data</a> <code class="fold">@</code></dt>
+<dd><p>hash.fetch(key, backup_val)</p>
+<p>&#23450;&#20041; hash &#21487;&#20197;&#29992; <code>{ :key =&gt; value }</code> &#36824;&#21487;&#20197; <code>{ key: value }</code></p>
+</dd>
+</dl></li>
 <li><a href="tricks/get-random-data.md">Get random data</a></li>
-<li><a href="tricks/head-tail.md">Head tail</a></li>
+<li><dl>
+<dt><a href="tricks/head-tail.md">Head tail</a> <code class="fold">@</code></dt>
+<dd><pre><code>def my_reduce(array)
+    head, *tail = array
+    return (tail.empty? ? head : (head + my_reduce(tail)))
+end</code></pre>
+<p>&#36825;&#21644; array &#30340; inject &#19981;&#26159;&#31867;&#20284;&#20040;&#65311;</p>
+<pre><code>total = array.inject {|sum,item| sum+item }</code></pre>
+</dd>
+</dl></li>
 <li><a href="tricks/inject.md">Inject</a></li>
 <li><a href="tricks/inspecting-the-source-with-script-lines.md">Inspecting the source with script lines</a></li>
-<li><a href="tricks/iterating-over-specific-types.md">Iterating over specific types</a></li>
-<li><a href="tricks/lambda-your-own-syntax.md">Lambda your own syntax</a></li>
+<li><p><a href="tricks/iterating-over-specific-types.md">Iterating over specific types</a></p></li>
+<li><dl>
+<dt><a href="tricks/lambda-your-own-syntax.md">Lambda your own syntax</a> <code class="fold">@</code></dt>
+<dd><p>&#23601;&#26159;&#22312; Kernel &#36825;&#20010; module &#37324;&#38754; <code>alias_method :&#955;, :lambda</code> &#25402;&#26080;&#32842;&#30340;&#8230;&#8230;</p>
+</dd>
+</dl></li>
 <li><a href="tricks/memoization.md">Memoization</a></li>
 <li><a href="tricks/print-formatted-with-debug.md">Print formatted with debug</a></li>
-<li><a href="tricks/ruby-debug-flag.md">Ruby debug flag</a></li>
-<li><a href="tricks/shortcut-variable-interpolation.md">Shortcut variable interpolation</a></li>
-<li><a href="tricks/single-instance-running.md">Single instance running</a></li>
-<li><a href="tricks/smalltalk-conditionals.md">Smalltalk conditionals</a></li>
-<li><a href="tricks/splat-operator.md">Splat operator</a></li>
-<li><a href="tricks/stab-operator.md">Stab operator</a></li>
-<li><a href="tricks/struct-without-assignment.md">Struct without assignment</a></li>
-<li><a href="tricks/super-magic-keyword.md">Super magic keyword</a></li>
-<li><a href="tricks/super-magic-keyword2.md">Super magic keyword2</a></li>
-<li><a href="tricks/super-magic-keyword3.md">Super magic keyword3</a></li>
-<li><a href="tricks/super-magic-keyword4.md">Super magic keyword4</a></li>
-<li><a href="tricks/super-magic-keyword5.md">Super magic keyword5</a></li>
-<li><a href="tricks/tail-call.md">Tail call</a></li>
+<li><p><a href="tricks/ruby-debug-flag.md">Ruby debug flag</a></p></li>
+<li><dl>
+<dt><a href="tricks/shortcut-variable-interpolation.md">Shortcut variable interpolation</a> <code class="fold">@</code></dt>
+<dd><p>&#19981;&#38656;&#35201;&#21152;&#8220;{}&#8221;&#65292;&#19981;&#36807;&#25105;&#24314;&#35758;&#21152;&#19978;&#65292;&#21453;&#27491;&#27809;&#26377;&#25439;&#22833;&#12290;</p>
+<div class="sourceCode"><pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="ot">@instance</span> = <span class="st">:instance</span>
+<span class="ot">@@class</span> = <span class="st">:class</span>
+<span class="dt">$global</span> = <span class="st">:global</span>
+
+p <span class="st">&quot;</span><span class="ot">#@instance</span><span class="st">, </span><span class="ot">#@@class</span><span class="st">, and #$global variables don&#39;t need braces&quot;</span></code></pre></div>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/single-instance-running.md">Single instance running</a> <code class="fold">@</code></dt>
+<dd><pre><code>DATA.flock(File::LOCK_EX | File::LOCK_NB) or abort &#39;Already running&#39;
+
+trap(&#39;INT&#39;, &#39;EXIT&#39;)
+puts &#39;Running...&#39;
+loop do
+  sleep
+end
+
+__END__
+DO NOT DELETE: used for locking</code></pre>
+<p>&#36824;&#26159;&#29992;&#20102; <code>__END__</code> &#21644; DATA &#30340; IO&#65292;&#24456;&#31070;&#22855;&#30340;&#26679;&#23376;&#12290;</p>
+</dd>
+</dl></li>
+<li><p><a href="tricks/smalltalk-conditionals.md">Smalltalk conditionals</a></p></li>
+<li><dl>
+<dt><a href="tricks/splat-operator.md">Splat operator</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#20010;&#23601;&#26159;&#19968;&#33324;&#30340;&#29992;&#27861;&#21834;&#8230;&#8230; &#36825;&#20010;&#25105;&#20498;&#26159;&#27809;&#35265;&#36807;&#65306;</p>
+<pre><code># Two splats (**) convert a hash into an arbitary number of keyword arguments
+# This operator doesn&#39;t technically have a name
+
+arguments = { first: 1, second: 2, third: 3 }
+my_method(**arguments)
+
+# or:
+
+arguments = { first: 1, second: 2 }
+my_method(third: 3, **arguments)
+
+# Are equivalent to:
+
+my_method(first:1, second:2, third:3)</code></pre>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/stab-operator.md">Stab operator</a> -&lt; <code class="fold">@</code></dt>
+<dd><p>Stab operator&#8230;&#8230;&#36825;&#20010;&#21517;&#23383;&#37257;&#20102;&#12290;&#23601;&#26159; <code>-&gt;</code> &#31526;&#21495;&#26367;&#20195;&#8220;lambda&#8221;&#32780;&#24050;&#21834;&#8230;&#8230;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/struct-without-assignment.md">Struct without assignment</a> <code class="fold">@</code></dt>
+<dd><pre><code>Struct.new(&quot;Name&quot;, :first, :last) do
+  def full
+    &quot;#{first} #{last}&quot;
+  end
+end
+
+franzejr = Struct::Name.new(&quot;Franze&quot;, &quot;Jr&quot;)
+p franzejr.full
+
+# Result:
+# &quot;Franze Jr&quot;</code></pre>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/super-magic-keyword.md">Super magic keyword</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#37324;&#31070;&#22855;&#30340;&#26159;&#30452;&#25509;&#35843;&#29992;&#20102;&#29238;&#31867; super &#30340;&#21516;&#21517;&#20989;&#25968;&#12290;&#21482;&#35201; <code>super(args)</code> &#23601;&#21487;&#20197;&#65292;&#19981;&#38656;&#35201; <code>super.same_method_name(args)</code>&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/super-magic-keyword2.md">Super magic keyword2</a> <code class="fold">@</code></dt>
+<dd><p>&#20854;&#23454;&#36830; <code>super(args)</code> &#37117;&#19981;&#29992;&#8230;&#8230;&#30452;&#25509; <code>super</code>&#8230;&#8230;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/super-magic-keyword3.md">Super magic keyword3</a> <code class="fold">@</code></dt>
+<dd><p>&#20294;&#22914;&#26524;&#29992;&#20102; <code>super()</code> &#23601;&#26159;&#35828;&#20320;&#19981;&#20256;&#20837;&#21442;&#25968;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/super-magic-keyword4.md">Super magic keyword4</a> <code class="fold">@</code></dt>
+<dd><p><code>super(&amp;nil)</code> &#21644; <code>super()</code> &#31561;&#20215;&#12290;</p>
+<p>&amp;nil &#26159;&#19968;&#20010; nil proc&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/super-magic-keyword5.md">Super magic keyword5</a> <code class="fold">@</code></dt>
+<dd><p>???</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/tail-call.md">Tail call</a> <code class="fold">@</code></dt>
+<dd><p>&#23614;&#36882;&#24402;&#12290;</p>
+</dd>
+</dl></li>
 <li><a href="tricks/trigger-irb-as-needed.md">Trigger irb as needed</a></li>
-<li><a href="tricks/unfreeze-objects-with-fiddle.md">Unfreeze objects with fiddle</a></li>
-<li><a href="tricks/unused-variable-format.md">Unused variable format</a></li>
-<li><a href="tricks/variables-from-a-regex.md">Variables from a regex</a></li>
-<li><a href="tricks/zip.md">Zip</a></li>
-<li><a href="tricks/introspecting_block_parameters.md">Introspecting Block Parameters</a></li>
-<li><a href="tricks/add_uniq_value_to_array.md">How to add uniq value to array</a></li>
+<li><p><a href="tricks/unfreeze-objects-with-fiddle.md">Unfreeze objects with fiddle</a></p></li>
+<li><dl>
+<dt><a href="tricks/unused-variable-format.md">Unused variable format</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#20010;&#22909;&#24819;&#27809;&#24517;&#35201;&#8230;&#8230;&#30452;&#25509; <code>|name,|</code> &#23601;&#21487;&#20197;&#30340;&#8230;&#8230; &#19981;&#36807;&#36825;&#20010;&#35821;&#27861; <code>|name,_,_|</code> &#24456;&#20687; perl&#65292;&#36825;&#37324;&#20801;&#35768;&#37325;&#21517;&#30340; arg&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="tricks/variables-from-a-regex.md">Variables from a regex</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#20010;&#21644; ruby &#26080;&#20851;&#8230;&#8230;RegExp &#37117;&#21487;&#20197; capture &#21305;&#37197;&#30340;&#20869;&#23481;&#24182;&#32473;&#19968;&#20010;&#21517;&#23383;&#30340;&#12290;</p>
+</dd>
+</dl></li>
+<li><p><a href="tricks/zip.md">Zip</a></p></li>
+<li><p><a href="tricks/introspecting_block_parameters.md">Introspecting Block Parameters</a></p></li>
+<li><dl>
+<dt><a href="tricks/add_uniq_value_to_array.md">How to add uniq value to array</a> <code class="fold">@</code></dt>
+<dd><p><code>array |= [2, 4]</code> &#36825;&#29305;&#20040;&#37117;&#34892;&#8230;&#8230;</p>
+</dd>
+</dl></li>
 </ul>
 <!-- body-after -->
 <!-- mh-info (true/false, default: true) -->

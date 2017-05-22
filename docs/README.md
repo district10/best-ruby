@@ -12,7 +12,7 @@
 
 > Absolutely the best way to learn to write idiomatic Ruby code is to read idiomatic Ruby code. [Eloquent Ruby](http://www.amazon.com/Eloquent-Ruby-Addison-Wesley-Professional/dp/0321584104)
 
-This repository aims to help everyone write more idiomatic, clean, and tricky ruby code and also document good refactoring techniques. You can add your own technique or paste it from some website. Do not forget the source, of course. All the tricks are in the /tricks folder.
+This repository aims to help everyone write more 【idiomatic, clean, and tricky ruby code】 and also document good refactoring techniques. You can add your own technique or paste it from some website. Do not forget the source, of course. All the tricks are in the /tricks folder.
 
 For the sake of clarity, you should paste in the markdown format. At the end, if the code is not your own, paste a reference to the author and source of the technique.
 
@@ -29,6 +29,10 @@ You can write Ruby code, but it can sometimes look like Java code. Here you can 
 Small (and big) improvements you can apply to your code and improve it's readability and maintenance. Change the internal structure of the code without changing it's behaviour.
 
 ## [Best Practices](best_practices.md)
+
+这下面就这一个：
+
+-   rescue => Exception e
 
 If you keep your house cleaned constantly you'll never need to waste a weekend cleaning it. The same applies to your code. Be disciplined and keep your code looking good with those tips.
 

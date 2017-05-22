@@ -24,17 +24,101 @@
 <!-- body (Modify with CAUSION) -->
 <h1 id="idiomatic-ruby">Idiomatic Ruby</h1>
 <ul>
-<li><a href="idiomatic_ruby/each_vs_map.md">Each vs map</a></li>
-<li><a href="idiomatic_ruby/conditional_assignment.md">Conditional assignment</a></li>
-<li><a href="idiomatic_ruby/combine_elements_in_collection.md">Combine operation over collections (enumerables)</a></li>
-<li><a href="idiomatic_ruby/array_of_strings_symbols.md">Array of Strings or Symbols</a></li>
-<li><a href="idiomatic_ruby/multiple_assignment.md">Multiple Assignment</a></li>
-<li><a href="idiomatic_ruby/use_symbol_to_proc.md">Use Symbol to_proc</a></li>
-<li><a href="idiomatic_ruby/array_sample.md">Array Sample (enumerables)</a></li>
-<li><a href="idiomatic_ruby/use_times.md">Use Fixnum#times</a></li>
-<li><a href="idiomatic_ruby/implicit_return.md">Implicit Return</a></li>
-<li><a href="idiomatic_ruby/collect_vs_select.md">Collect vs Select</a></li>
-<li><a href="idiomatic_ruby/options_hash_with_defaults.md">Options Hash with Defaults</a></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/each_vs_map.md">Each vs map</a> <code class="fold">@</code></dt>
+<dd><p>&#26174;&#28982; map &#22909;&#12290;</p>
+<pre><code>user_ids = users.map { |user| user.id }
+user_ids = users.map(&amp;:id)</code></pre>
+<p>.map &#25110;&#32773; .collect&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/conditional_assignment.md">Conditional assignment</a> <code class="fold">@</code></dt>
+<dd><p>&#22914;&#26524; true/false&#65292;&#29992; <code>? :</code> &#22914;&#26524;&#26356;&#22810;&#36873;&#25321;&#65292;&#29992; case when&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/combine_elements_in_collection.md">Combine operation over collections (enumerables)</a> <code class="fold">@</code></dt>
+<dd><ul>
+<li>Combine elements with reduce: <code>values.reduce(:*)</code></li>
+<li><p>inject</p>
+<pre><code>values.inject({}) do |hash, value|
+      hash.merge(value =&gt; value ** 2)
+end
+# =&gt; { 1 =&gt; 1, 2 =&gt; 4, 3 =&gt; 9, 4 =&gt; 16 }</code></pre></li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/array_of_strings_symbols.md">Array of Strings or Symbols</a> <code class="fold">@</code></dt>
+<dd><ul>
+<li><code>%w</code> array of words</li>
+<li><code>%i</code> array of symbols</li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/multiple_assignment.md">Multiple Assignment</a> <code class="fold">@</code></dt>
+<dd><p>&#27809;&#21861;&#22909;&#35828;&#30340;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/use_symbol_to_proc.md">Use Symbol to_proc</a> <code class="fold">@</code></dt>
+<dd><p>The <code>&amp;</code> calls to_procon the object, and passes it as a block to the method. The following calls are equivalent:</p>
+<pre><code>%w(jonh mary michael).map { |x| x.upcase }
+#=&gt; [&quot;JONH&quot;, &quot;MARY&quot;, &quot;MICHAEL&quot;]
+
+%w(jonh mary michael).map(&amp;:upcase)
+#=&gt; [&quot;JONH&quot;, &quot;MARY&quot;, &quot;MICHAEL&quot;]</code></pre>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/array_sample.md">Array Sample (enumerables)</a> <code class="fold">@</code></dt>
+<dd><ul>
+<li>array[rand(length)]</li>
+<li>array.shuffle.first</li>
+<li>array.sample &#26368;&#24555;</li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/use_times.md">Use Fixnum#times</a> <code class="fold">@</code></dt>
+<dd><ul>
+<li>Fixnum.times &#26356;&#24555;&#28857;&#12290;</li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/implicit_return.md">Implicit Return</a> <code class="fold">@</code></dt>
+<dd><p>&#19981; return &#26159;&#32654;&#24503;&#12290;</p>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/collect_vs_select.md">Collect vs Select</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#37324;&#20854;&#23454;&#19981;&#29992;&#35299;&#37322;&#30340;&#12290;</p>
+<ul>
+<li>collect &#26159; map</li>
+<li>select &#26159; filter</li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt><a href="idiomatic_ruby/options_hash_with_defaults.md">Options Hash with Defaults</a> <code class="fold">@</code></dt>
+<dd><p>&#36825;&#20010;&#22312; js &#37324;&#38754;&#20063;&#24120;&#35265;&#12290;</p>
+<pre><code>def create_user(options = {})
+  user_options = { name: &#39;user&#39;, avatar: &#39;default.png&#39;}.merge!(options)
+end
+
+p create_user
+#=&gt; { name: &#39;user&#39;, avatar: &#39;default.png&#39;}
+
+p create_user name: &#39;Adam&#39;
+#=&gt; { name: &#39;Adam&#39;, avatar: &#39;default.png&#39;}
+
+p create_user name: &#39;Salma&#39;, avatar: &#39;special.png&#39;
+#=&gt; { name: &#39;Salma&#39;, avatar: &#39;special.png&#39;}</code></pre>
+</dd>
+</dl></li>
 </ul>
 <!-- body-after -->
 <!-- mh-info (true/false, default: true) -->
